@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://https://https://wordpress.org/plugins/ace-maintenance-page
+ * @link       https://wordpress.org/plugins/ace-maintenance-page
  * @since      1.0.0
  *
  * @package    Ace_Maintenance_Page

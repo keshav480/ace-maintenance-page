@@ -1,12 +1,12 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 /**
  * Define the internationalization functionality
  *
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       https://https://https://wordpress.org/plugins/ace-maintenance-page
+ * @link       https://wordpress.org/plugins/ace-maintenance-page
  * @since      1.0.0
  *
  * @package    Ace_Maintenance_Page
@@ -33,12 +33,6 @@ class Ace_Maintenance_Page_i18n {
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
-
-		load_plugin_textdomain(
-			'ace-maintenance-page',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
 
 	}
 

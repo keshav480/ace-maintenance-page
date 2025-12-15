@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       https://https://https://wordpress.org/plugins/ace-maintenance-page
+ * @link       https://wordpress.org/plugins/ace-maintenance-page
  * @since      1.0.0
  *
  * @package    Ace_Maintenance_Page
@@ -83,23 +83,13 @@ class Ace_Maintenance_Page_Public {
 		
 		//wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/ace-maintenance-page-public.css', array(), $this->version, 'all' );
 
-		$opts    = get_option( 'ace_maintenance_options', [] );
-    $enabled = ! empty( $opts['enabled'] );
+		$ace_maintenance_opts    = get_option( 'ace_maintenance_options', [] );
+		$enabled = ! empty( $ace_maintenance_opts['enabled'] );
+		$ace_maintenance_Preview = isset($_GET['ace_preview']) && current_user_can('manage_options') && isset($_GET['ace_preview_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['ace_preview_nonce'])), 'ace_preview'); 
+	
+		if ( $enabled || $ace_maintenance_Preview ) {$css_file = plugin_dir_path( __FILE__ ) . 'css/ace-maintenance-page-public.css';wp_enqueue_style($this->plugin_name . '-public',plugin_dir_url( __FILE__ ) . 'css/ace-maintenance-page-public.css',[],file_exists( $css_file ) ? filemtime( $css_file ) : $this->version,'all');
 
-    $isPreview = isset($_GET['ace_preview'])
-        && current_user_can('manage_options')
-        && isset($_GET['ace_preview_nonce'])
-        && wp_verify_nonce(sanitize_text_field($_GET['ace_preview_nonce']), 'ace_preview');
-
-    if ( $enabled || $isPreview ) {
-        wp_enqueue_style(
-            $this->plugin_name . '-public',
-            plugin_dir_url( __FILE__ ) . 'css/ace-maintenance-page-public.css',
-            [],
-            $this->version,
-            'all'
-        );
-    }
+		}
 
 	}
 
@@ -124,103 +114,82 @@ class Ace_Maintenance_Page_Public {
 
 		//wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ace-maintenance-page-public.js', array( 'jquery' ), $this->version, false );
 
-		 $opts    = get_option( 'ace_maintenance_options', [] );
-    $enabled = ! empty( $opts['enabled'] );
+		 $ace_maintenance_opts    = get_option( 'ace_maintenance_options', [] );
+   		 $enabled = ! empty( $ace_maintenance_opts['enabled'] );
+		$ace_maintenance_Preview = isset($_GET['ace_preview'])
+			&& current_user_can('manage_options')
+			&& isset($_GET['ace_preview_nonce'])
+			&& wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['ace_preview_nonce'])), 'ace_preview');
 
-    $isPreview = isset($_GET['ace_preview'])
-        && current_user_can('manage_options')
-        && isset($_GET['ace_preview_nonce'])
-        && wp_verify_nonce(sanitize_text_field($_GET['ace_preview_nonce']), 'ace_preview');
-
-    if ( $enabled || $isPreview ) {
-        wp_enqueue_script(
-            $this->plugin_name . '-public',
-            plugin_dir_url( __FILE__ ) . 'js/ace-maintenance-page-public.js',
-            [ 'jquery' ],
-            $this->version,
-            true
-        );
-    }
+		if ( $enabled || $ace_maintenance_Preview ) {
+			wp_enqueue_script(
+				$this->plugin_name . '-public',
+				plugin_dir_url( __FILE__ ) . 'js/ace-maintenance-page-public.js',
+				[ 'jquery' ],
+				$this->version,
+				true
+			);
+		}
 	}
-
-	
-
-
-	public function displayMaintenancePage() {
-
-		$opts    = get_option( 'ace_maintenance_options', [] );
-		$enabled = ! empty( $opts['enabled'] );
-
-		// Admin preview detection
-		$isPreview = isset( $_GET['ace_preview'] )
+	public function ace_maintenance_page_display() {
+		$ace_maintenance_opts    = get_option( 'ace_maintenance_options', [] );
+		$enabled = ! empty( $ace_maintenance_opts['enabled'] );
+		$ace_maintenance_Preview = isset( $_GET['ace_preview'] )
 			&& current_user_can( 'manage_options' )
 			&& isset( $_GET['ace_preview_nonce'] )
-			&& wp_verify_nonce( sanitize_text_field( $_GET['ace_preview_nonce'] ), 'ace_preview' );
-
-		// If maintenance not enabled and not preview → do nothing
-		if ( ! $enabled && ! $isPreview ) {
+			&& wp_verify_nonce( sanitize_text_field(wp_unslash($_GET['ace_preview_nonce'] )), 'ace_preview' );
+		if ( ! $enabled && ! $ace_maintenance_Preview ) {
 			return;
 		}
-
-		// If admin and not preview → do nothing
-		if ( $enabled && current_user_can( 'manage_options' ) && ! $isPreview ) {
+		if ( $enabled && current_user_can( 'manage_options' ) && ! $ace_maintenance_Preview ) {
 			return;
 		}
-
-		// If enabled for visitors, check exclude slugs
 		if ( $enabled && ! current_user_can( 'manage_options' ) ) {
-			$excluded = array_map( 'trim', explode( ',', $opts['exclude_pages'] ?? '' ));
+			$excluded = array_map( 'trim', explode( ',', $ace_maintenance_opts['exclude_pages'] ?? '' ));
 			global $post;
 			if ( $post ) {
 				$current_slug = $post->post_name;
 				if ( in_array( $current_slug, $excluded, true ) ) {
-					return; // skip maintenance, show normal page
+					return; 
 				}
 			}
 		}
-
-		// Build context for template
 		nocache_headers();
 		$context = [
-			'title'       => esc_html( $opts['title'] ?? 'Maintenance Mode' ),
-			'description' => wp_kses_post( $opts['description'] ?? 'We’ll be back soon.' ),
-			'logo'        => ! empty( $opts['logo'] )
-                     ? esc_url( $opts['logo'] )
+			'title'       => esc_html( $ace_maintenance_opts['title'] ?? 'Maintenance Mode' ),
+			'description' => wp_kses_post( $ace_maintenance_opts['description'] ?? 'We’ll be back soon.' ),
+			'logo'        => ! empty( $ace_maintenance_opts['logo'] )
+                     ? esc_url( $ace_maintenance_opts['logo'] )
                      : '',
-            'background'  => ! empty( $opts['background'] )
-                     ? esc_url( $opts['background'] )
+            'background'  => ! empty( $ace_maintenance_opts['background'] )
+                     ? esc_url( $ace_maintenance_opts['background'] )
                      : '',
 
-			'background_color' => ! empty( $opts['background_color'] )
-			? esc_attr( $opts['background_color'] )
+			'background_color' => ! empty( $ace_maintenance_opts['background_color'] )
+			? esc_attr( $ace_maintenance_opts['background_color'] )
 			: '',
-
-			'is_preview'  => $isPreview,
+			'is_preview'  => $ace_maintenance_Preview,
 		];
-
-			
-	$partial = plugin_dir_path( __DIR__ ) . 'public/partials/ace-maintenance-page-public-display.php';
+	$partial = plugin_dir_path(__FILE__ ) . 'partials/ace-maintenance-page-public-display.php';
 
 	if ( file_exists( $partial ) ) {
 		ob_start();
-		// Print enqueued CSS/JS before and after template
 		wp_head();
-		include $partial;
+		require_once $partial; 
 		wp_footer();
-
-		$html = ob_get_clean();
-
 		wp_die(
-			$html,
-			'Maintenance Mode',
-			[ 'response' => $isPreview ? 200 : 503 ]
+			 wp_kses_post($html),
+			esc_html__( 'Maintenance Mode', 'ace-maintenance-page' ),
+			[ 'response' => $ace_maintenance_Preview ? 200 : 503 ]
 		);
-	} else {
+		} else {
 		wp_die(
-			'Maintenance page template missing.',
-			'Maintenance Mode',
+			esc_html__( 'Maintenance page template missing.', 'ace-maintenance-page' ),
+			esc_html__( 'Maintenance Mode', 'ace-maintenance-page' ),
 			[ 'response' => 503 ]
 		);
+		$html = ob_get_clean();
+
 	}
 
     } 

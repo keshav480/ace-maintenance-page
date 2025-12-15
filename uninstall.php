@@ -19,7 +19,7 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       https://https://https://wordpress.org/plugins/ace-maintenance-page
+ * @link       https://wordpress.org/plugins/ace-maintenance-page
  * @since      1.0.0
  *
  * @package    Ace_Maintenance_Page

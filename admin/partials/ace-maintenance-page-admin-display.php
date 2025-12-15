@@ -5,7 +5,7 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       https://https://https://wordpress.org/plugins/ace-maintenance-page
+ * @link       https://wordpress.org/plugins/ace-maintenance-page
  * @since      1.0.0
  *
  * @package    Ace_Maintenance_Page
@@ -17,23 +17,18 @@
 
 <?php
 if( ! defined( 'ABSPATH' ) ) { exit; }
-    $opts = isset( $context['opts'] ) ? $context['opts'] : [];
-    $previewUrl = isset( $context['preview_url'] ) ? $context['preview_url'] : home_url( '/' );
+    $ace_maintenance_opts = isset( $context['opts'] ) ? $context['opts'] : [];
+  $ace_maintenance_preview_url  = isset( $context['preview_url'] ) ? $context['preview_url'] : home_url( '/' );
 ?>
 
 <div class="wrap">
 
     <h1>Ace Maintenance Settings</h1>
-
-    <?php if ( isset( $_GET['updated'] ) ) : ?>
-        <div class="notice notice-success is-dismissible"><p>Settings saved.</p></div>
-    <?php endif; ?>
-
     <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
         <?php wp_nonce_field( 'ace_maint_save_action', 'ace_maint_nonce' ); ?>
         <input type="hidden" name="action" value="ace_maint_save">
-        <input type="hidden" name="logo_old" value="<?php echo esc_attr( $opts['logo'] ?? '' ); ?>">
-        <input type="hidden" name="background_old" value="<?php echo esc_attr( $opts['background'] ?? '' ); ?>">
+        <input type="hidden" name="logo_old" value="<?php echo esc_attr( $ace_maintenance_opts['logo'] ?? '' ); ?>">
+        <input type="hidden" name="background_old" value="<?php echo esc_attr( $ace_maintenance_opts['background'] ?? '' ); ?>">
 
     <table class="form-table">
         <tr>
@@ -41,13 +36,13 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
             <td>
                 <label class="ace-switch">
                 <input type="checkbox" name="enabled" id="ace-enabled-toggle"
-                        <?php checked( 1, $opts['enabled'] ?? 0 ); ?>>
+                        <?php checked( 1, $ace_maintenance_opts['enabled'] ?? 0 ); ?>>
                 <span class="ace-slider"></span>
                 </label>
 
                 <!-- Preview button (hidden by default if toggle is off) -->
                 <?php 
-                $previewUrl = add_query_arg(
+              $ace_maintenance_preview_url  = add_query_arg(
                     [
                     'ace_preview'       => 1,
                     'ace_preview_nonce' => wp_create_nonce( 'ace_preview' ),
@@ -55,7 +50,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
                     home_url()
                 );
                 ?>
-                <p id="ace-preview-link" style="<?php echo ! empty( $opts['enabled'] ) ? '' : 'display:none;'; ?>">
+                <p id="ace-preview-link" style="<?php echo ! empty( $ace_maintenance_opts['enabled'] ) ? '' : 'display:none;'; ?>">
                 <a class="" href="<?php echo esc_url( $previewUrl ); ?>" target="_blank">
                     Preview Maintenance
                 </a>
@@ -65,7 +60,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
 
         <tr>
             <th scope="row">Heading</th>
-                <td><input type="text" name="title" class="regular-text" value="<?php echo esc_attr( $opts['title'] ?? '' ); ?>">
+                <td><input type="text" name="title" class="regular-text" value="<?php echo esc_attr( $ace_maintenance_opts['title'] ?? '' ); ?>">
                     <p class="description">
                 This title will be displayed prominently on the maintenance page.
                 Example: <code>Site Under Maintenance</code>
@@ -76,9 +71,9 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
             <th scope="row">Description</th>
             <td>
                 <?php
-                $content   = isset( $opts['description'] ) ? $opts['description'] : '';
-                $editor_id = 'ace_description';
-                $settings  = [
+                $ace_maintenance_content   = isset( $ace_maintenance_opts['description'] ) ? $ace_maintenance_opts['description'] : '';
+                $ace_maintenance_editor_id = 'ace_description';
+                $ace_maintenance_setting  = [
                     'textarea_name' => 'description',
                     'media_buttons' => true,          
                     'tinymce'       => [
@@ -88,7 +83,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
                     'quicktags'     => true,         
                     'editor_height' => 200,
                 ];
-                wp_editor( $content, $editor_id, $settings );
+                wp_editor( $ace_maintenance_content, $ace_maintenance_editor_id, $ace_maintenance_setting );
                 ?>
                     <p class="description">
                 Write a short message for visitors explaining the maintenance.
@@ -101,8 +96,8 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
             <td>
                 <input type="file" name="logo_file" accept="image/*">
                 <div class="ace-preview">
-                    <?php if ( ! empty( $opts['logo'] ) ) : ?>
-                        <img src="<?php echo esc_url( $opts['logo']); ?>" alt="Logo" style="max-width:120px;">
+                    <?php if ( ! empty( $ace_maintenance_opts['logo'] ) ) : ?>
+                        <img src="<?php echo esc_url( $ace_maintenance_opts['logo']); ?>" alt="Logo" style="max-width:120px;">
                             <p class="description">
                         Upload a logo image to display on the maintenance page.
                         Recommended size: square image for best results.
@@ -117,8 +112,8 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
                 <!-- Background image upload -->
                 <input type="file" name="background_file" accept="image/*">
                 <div class="ace-preview">
-                <?php if ( ! empty( $opts['background'] ) ) : ?>
-                    <img src="<?php echo esc_url( $opts['background'] ); ?>" alt="Background" style="max-width:160px;">
+                <?php if ( ! empty( $ace_maintenance_opts['background'] ) ) : ?>
+                    <img src="<?php echo esc_url( $ace_maintenance_opts['background'] ); ?>" alt="Background" style="max-width:160px;">
                     <br>
                     <label>
                     <input type="checkbox" name="remove_background" value="1">
@@ -129,7 +124,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
 
                 <!-- Background color picker -->
                 <input type="text" name="background_color" 
-                    value="<?php echo esc_attr( $opts['background_color'] ?? '' ); ?>" 
+                    value="<?php echo esc_attr( $ace_maintenance_opts['background_color'] ?? '' ); ?>" 
                     class="regular-text ace-color-field" />
                 <p class="description">
                 Upload a background image or enter a background color (e.g. <code>#f0f0f0</code> or <code>red</code>).  
@@ -142,7 +137,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
             <th scope="row">Exclude Pages</th>
             <td>
                 <textarea name="exclude_pages" rows="3" class="large-text"><?php 
-                    echo esc_textarea( $opts['exclude_pages'] ?? '' ); 
+                    echo esc_textarea( $ace_maintenance_opts['exclude_pages'] ?? '' ); 
                 ?></textarea>
                 <p class="description">
                     Enter page slugs separated by commas.  
@@ -155,7 +150,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
             <th scope="row">Logo Width (px)</th>
             <td>
                 <input type="number" name="logo_width" 
-                    value="<?php echo esc_attr( $opts['logo_width'] ?? '' ); ?>" 
+                    value="<?php echo esc_attr( $ace_maintenance_opts['logo_width'] ?? '' ); ?>" 
                     class="small-text"/>
                 <p class="description">Set the logo width in pixels (e.g., 160).</p>
             </td>
@@ -164,7 +159,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
             <th scope="row">Logo Height (px)</th>
             <td>
                 <input type="number" name="logo_height" 
-                    value="<?php echo esc_attr( $opts['logo_height'] ?? '' ); ?>" 
+                    value="<?php echo esc_attr( $ace_maintenance_opts['logo_height'] ?? '' ); ?>" 
                     class="small-text"  />
                 <p class="description">Set the logo height in pixels (e.g., 160).</p>
             </td>
@@ -175,12 +170,12 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
                 <fieldset>
                 <label>
                     <input type="radio" name="logo_shape" value="circle"
-                    <?php checked( $opts['logo_shape'] ?? 'circle', 'circle' ); ?> />
+                    <?php checked( $ace_maintenance_opts['logo_shape'] ?? 'circle', 'circle' ); ?> />
                     Circle (default)
                 </label><br>
                 <label>
                     <input type="radio" name="logo_shape" value="box"
-                    <?php checked( $opts['logo_shape'] ?? 'circle', 'box' ); ?> />
+                    <?php checked( $ace_maintenance_opts['logo_shape'] ?? 'circle', 'box' ); ?> />
                     Box / Square
                 </label>
                 </fieldset>

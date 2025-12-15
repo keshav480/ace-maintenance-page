@@ -2,9 +2,6 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
-
- 
-
 /* Full screen background with dark overlay */
 .ace-maintenance {
   position: fixed;
@@ -134,4 +131,9 @@
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+.ace-maintenance .ace-logo {
+  display: flex;
+  justify-content: center;
 }

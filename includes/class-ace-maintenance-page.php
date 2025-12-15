@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://https://https://wordpress.org/plugins/ace-maintenance-page
+ * @link       https://wordpress.org/plugins/ace-maintenance-page
  * @since      1.0.0
  *
  * @package    Ace_Maintenance_Page
@@ -30,10 +30,6 @@
 
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
-
-	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ace-maintenance-page-i18n.php';
-	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-ace-maintenance-page-admin.php';
-	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-ace-maintenance-page-public.php';
 
 class Ace_Maintenance_Page {
 
@@ -164,11 +160,10 @@ class Ace_Maintenance_Page {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-        //$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_admin_assets' );
-        $this->loader->add_action( 'admin_menu', $plugin_admin, 'addPluginPage' );
-        $this->loader->add_action( 'admin_post_ace_maint_save', $plugin_admin, 'handleFormSubmit' );
-		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'addAdminBarToggle', 100 );
-        $this->loader->add_action( 'admin_post_ace_maint_toggle', $plugin_admin, 'handleToggle' );
+        $this->loader->add_action( 'admin_menu', $plugin_admin, 'ace_maintenance_add_plugin_page' );
+        $this->loader->add_action( 'admin_post_ace_maint_save', $plugin_admin, 'ace_maintenance_handle_form_submit' );
+		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'ace_maintenance_admin_bar_toggle',999 );
+        $this->loader->add_action( 'admin_post_ace_maint_toggle', $plugin_admin, 'ace_maintenance_handleToggle' );
 
 	}
 
@@ -182,11 +177,9 @@ class Ace_Maintenance_Page {
 	private function define_public_hooks() {
 
 		$plugin_public = new Ace_Maintenance_Page_Public( $this->get_plugin_name(), $this->get_version() );
-
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-        $this->loader->add_action( 'template_redirect', $plugin_public, 'displayMaintenancePage' );
-        //$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_assets' );
+        $this->loader->add_action( 'template_redirect', $plugin_public, 'ace_maintenance_page_display' );
 
 	}
 
