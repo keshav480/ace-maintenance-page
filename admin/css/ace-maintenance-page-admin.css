@@ -1,0 +1,136 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+
+.ace-switch
+{
+   position: relative; display: inline-block; width: 56px; height: 28px; 
+}
+.ace-switch input
+{
+    opacity: 0; width: 0; height: 0;
+}
+.ace-slider 
+{
+position: absolute; cursor: pointer; inset: 0; background: #ccc; transition: .3s; border-radius: 28px; 
+}
+.ace-slider:before 
+{ 
+   content: ""; position: absolute; height: 22px; width: 22px; left: 3px; top: 3px; background: #fff; transition: .3s; border-radius: 50%;
+}
+.ace-switch input:checked + .ace-slider 
+{ 
+    background: #2271b1; 
+}
+.ace-switch input:checked + .ace-slider:before
+{ 
+  transform: translateX(28px); 
+}
+.ace-preview 
+{
+     margin-top: 8px; 
+}
+
+
+
+/* Toggle switch container */
+.ace-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+/* Hide default checkbox */
+.ace-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider background */
+.ace-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 30px;
+}
+
+/* Slider knob */
+.ace-slider:before {
+  content: "";
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  left: 3px;
+  top: 3px;
+  background-color: #fff;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* When checked, background turns green */
+.ace-switch input:checked + .ace-slider {
+  background-color: #4CAF50; /* green */
+}
+
+/* Move knob to right when checked */
+.ace-switch input:checked + .ace-slider:before {
+  transform: translateX(30px);
+}
+
+/* Optional shadow for depth */
+.ace-slider:before {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.button-secondary{
+    color: white !important;
+    background-color: #2271b1 !important;
+    justify-content: space-between;
+}
+
+
+textarea[name="exclude_pages"] {
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  font-family: monospace;
+}
+
+
+p.description {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 6px;
+}
+
+
+/* Interactive number fields logo */
+input[type="number"].small-text {
+  padding: 6px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="number"].small-text:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
+}
+
+
+
+fieldset label {
+  display: inline-block;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+fieldset input[type="radio"] {
+  margin-right: 6px;
+}
