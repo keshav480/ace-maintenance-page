@@ -51,13 +51,12 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
     <h1 class="ace-title"><?php echo esc_html( $title ); ?></h1>
 
     <p class="ace-description">
-      <?php echo wp_kses_post( $ace_maintenance_description ); ?>
-    </p>
 
-    <form class="ace-form" onsubmit="return false;">
-        <input type="email" placeholder="Enter your email">
-        <button type="button">Notify Me</button>
-    </form>
+    <?php
+      $ace_maintenance_shortcode = wp_kses_post( $ace_maintenance_description );
+      echo do_shortcode( $ace_maintenance_shortcode );
+      ?>
+    </p>
 
     <?php if ( $ace_maintenance_Preview ) : ?>
         <p class="ace-preview-note">Preview mode</p>

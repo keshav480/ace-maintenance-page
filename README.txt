@@ -83,4 +83,3 @@ Unordered list:
 * Excluded pages
 * Mobile friendly
 
-Visit [WordPress](http://wordpress.org/) for more information.

@@ -1,5 +1,5 @@
 <?php
-
+if( ! defined( 'ABSPATH' ) ) { exit; }
 /**
  * Provide a admin area view for the plugin
  *
@@ -11,14 +11,8 @@
  * @package    Ace_Maintenance_Page
  * @subpackage Ace_Maintenance_Page/admin/partials
  */
-?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
-<?php
-if( ! defined( 'ABSPATH' ) ) { exit; }
     $ace_maintenance_opts = isset( $context['opts'] ) ? $context['opts'] : [];
-  $ace_maintenance_preview_url  = isset( $context['preview_url'] ) ? $context['preview_url'] : home_url( '/' );
+    $ace_maintenance_preview_url  = isset( $context['preview_url'] ) ? $context['preview_url'] : home_url( '/' );
 ?>
 
 <div class="wrap">
@@ -86,8 +80,7 @@ if( ! defined( 'ABSPATH' ) ) { exit; }
                 wp_editor( $ace_maintenance_content, $ace_maintenance_editor_id, $ace_maintenance_setting );
                 ?>
                     <p class="description">
-                Write a short message for visitors explaining the maintenance.
-                You can format text, add lists, or links.
+               Write a short message for visitors explaining the maintenance, or display the form using a shortcode. You can format text, add lists, or include links.
                 </p>
             </td>
         </tr>
