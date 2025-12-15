@@ -24,7 +24,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-
 class Ace_Maintenance_Page_Admin {
 
 	/**
@@ -81,13 +80,14 @@ class Ace_Maintenance_Page_Admin {
 		//wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/ace-maintenance-page-admin.css', array(), $this->version, 'all' );
 
 		
-    wp_enqueue_style(
-        $this->plugin_name . '-admin',
-        plugin_dir_url( __FILE__ ) . 'css/ace-maintenance-page-admin.css',
-        [],
-        $this->version,
-        'all'
-    );
+		wp_enqueue_style(
+			$this->plugin_name . '-admin',
+			plugin_dir_url( __FILE__ ) . 'css/ace-maintenance-page-admin.css',
+			[],
+			filemtime( plugin_dir_path( __FILE__ ) . 'css/ace-maintenance-page-admin.css' ),
+			'all'
+		);
+
 	}
 
 	/**
@@ -116,7 +116,7 @@ class Ace_Maintenance_Page_Admin {
 				$this->plugin_name . '-admin',
 				plugin_dir_url( __FILE__ ) . 'js/ace-maintenance-page-admin.js',
 				[ 'jquery' ],
-				$this->version,
+				filemtime( plugin_dir_path( __FILE__ ) . 'js/ace-maintenance-page-admin.js' ),
 				true
 			);
 		
